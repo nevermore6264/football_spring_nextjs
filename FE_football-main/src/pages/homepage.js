@@ -22,12 +22,14 @@ import { getTopScorers } from "src/view/ManageCalendar/ManageCalendarServices";
 import { HeaderHomepage } from "src/layouts/dashboard/header"; // Import Header
 import { getAllTournaments } from "src/view/Tournaments/TournamentsServices";
 import { format } from "date-fns";
+import { getAllPlayer } from "src/view/ManagePlayer/ManagePlayerServices";
 
 const Homepage = () => {
   const [listItems, setlistItems] = useState([]);
   const [listItemsScores, setlistItemsScores] = useState([]);
   const [listItemsGoals, setlistItemsGoals] = useState([]);
   const [listItemsTournaments, setlistItemsTournaments] = useState([]);
+  const [listItemsPlayers, setlistItemsPlayers] = useState([]);
 
   const getStatistics = async () => {
     try {
@@ -71,11 +73,19 @@ const Homepage = () => {
     } catch (error) {}
   };
 
+  const players = async () => {
+    try {
+      const data = await getAllPlayer();
+      setlistItemsPlayers(data?.data);
+    } catch (error) {}
+  };
+
   useEffect(() => {
     getGoals();
     getStatistics();
     scorers();
     tournaments();
+    players();
   }, []);
 
   return (
@@ -107,22 +117,24 @@ const Homepage = () => {
               <Table sx={{ borderCollapse: "collapse", width: "100%" }}>
                 <TableHead>
                   <TableRow>
-                    {["Team Name", "Matches", "Total Wins", "Points", "Tournaments"].map((header, index) => (
-                      <TableCell
-                        key={index}
-                        align={index === 0 ? "left" : "center"}
-                        sx={{
-                          backgroundColor: "#EBEEFE",
-                          fontWeight: "bold",
-                          fontSize: "16px",
-                          color: "#555",
-                          padding: "12px 16px",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {header}
-                      </TableCell>
-                    ))}
+                    {["Team Name", "Matches", "Total Wins", "Points", "Tournaments"].map(
+                      (header, index) => (
+                        <TableCell
+                          key={index}
+                          align={index === 0 ? "left" : "center"}
+                          sx={{
+                            backgroundColor: "#EBEEFE",
+                            fontWeight: "bold",
+                            fontSize: "16px",
+                            color: "#555",
+                            padding: "12px 16px",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {header}
+                        </TableCell>
+                      )
+                    )}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -263,22 +275,24 @@ const Homepage = () => {
               <Table sx={{ borderCollapse: "collapse", width: "100%" }}>
                 <TableHead>
                   <TableRow>
-                    {["Home Team", "Home Goals", "", "Yellow Card Home", "Tournament"].map((header, index) => (
-                      <TableCell
-                        key={index}
-                        align={index === 0 ? "left" : "center"}
-                        sx={{
-                          backgroundColor: "#EBEEFE",
-                          fontWeight: "bold",
-                          color: "#333",
-                          fontSize: "16px",
-                          padding: "12px 16px",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {header}
-                      </TableCell>
-                    ))}
+                    {["Home Team", "Home Goals", "", "Yellow Card Home", "Tournament"].map(
+                      (header, index) => (
+                        <TableCell
+                          key={index}
+                          align={index === 0 ? "left" : "center"}
+                          sx={{
+                            backgroundColor: "#EBEEFE",
+                            fontWeight: "bold",
+                            color: "#333",
+                            fontSize: "16px",
+                            padding: "12px 16px",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {header}
+                        </TableCell>
+                      )
+                    )}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -390,8 +404,12 @@ const Homepage = () => {
                             >
                               {tournament.tournamentsName}
                             </TableCell>
-                            <TableCell align="center">{format(new Date(tournament?.startDate), "dd/MM/yyyy")}</TableCell>
-                            <TableCell align="center">{format(new Date(tournament?.endDate), "dd/MM/yyyy")}</TableCell>
+                            <TableCell align="center">
+                              {format(new Date(tournament?.startDate), "dd/MM/yyyy")}
+                            </TableCell>
+                            <TableCell align="center">
+                              {format(new Date(tournament?.endDate), "dd/MM/yyyy")}
+                            </TableCell>
                           </TableRow>
                         );
                       })
@@ -403,6 +421,115 @@ const Homepage = () => {
           <Divider sx={{ marginTop: 2 }} />
         </Card>
 
+        {/* Card for Players */}
+        <Card
+          sx={{
+            borderRadius: 2,
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+            marginBottom: 4,
+            padding: 3,
+          }}
+        >
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <CardHeader
+              title="Players"
+              titleTypographyProps={{
+                variant: "h5",
+                sx: { fontWeight: "bold", color: "#333" },
+              }}
+            />
+          </Box>
+          <Scrollbar sx={{ flexGrow: 1 }}>
+            <Box>
+              <Table sx={{ borderCollapse: "collapse", width: "100%" }}>
+                <TableHead>
+                  <TableRow>
+                    {[
+                      "Full name",
+                      "The team is competing",
+                      "Position",
+                      "Jersey Number",
+                      "Date of birth",
+                      "Country",
+                      "Email",
+                      "Phone",
+                      "Height",
+                      "Weight",
+                      "Contract Start Date",
+                      "Contract End Date",
+                      "Action",
+                    ].map((header, index) => (
+                      <TableCell
+                        key={index}
+                        align={index === 0 ? "left" : "center"}
+                        sx={{
+                          backgroundColor: "#EBEEFE",
+                          fontWeight: "bold",
+                          fontSize: "16px",
+                          color: "#555",
+                          padding: "12px 16px",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {header}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {listItemsPlayers.length <= 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={5} align="center">
+                        <Typography variant="body1" sx={{ color: "gray", padding: 3 }}>
+                          No data found
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    listItemsPlayers
+                      .sort((a, b) => b?.point - a?.point)
+                      ?.map((order) => {
+                        return (
+                          <TableRow
+                            hover
+                            key={order?.id}
+                            sx={{
+                              "&:hover": { backgroundColor: "#f9f9f9" },
+                            }}
+                          >
+                            <TableCell
+                              align="left"
+                              sx={{
+                                maxWidth: "200px",
+                                wordBreak: "break-word",
+                                fontWeight: "500",
+                                color: "#333",
+                                padding: "12px 16px",
+                              }}
+                            >
+                              {order.fullName}
+                            </TableCell>
+                            <TableCell align="center">{order?.team?.teamName}</TableCell>
+                            <TableCell align="center">{order?.position}</TableCell>
+                            <TableCell align="center">{order?.jerseyNumber}</TableCell>
+                            <TableCell align="center">{order?.dateOfBirth}</TableCell>
+                            <TableCell align="center">{order?.country}</TableCell>
+                            <TableCell align="center">{order?.email}</TableCell>
+                            <TableCell align="center">{order?.phone}</TableCell>
+                            <TableCell align="center">{order?.height}</TableCell>
+                            <TableCell align="center">{order?.weight}</TableCell>
+                            <TableCell align="center">{order?.contractStartDate}</TableCell>
+                            <TableCell align="center">{order?.contractEndDate}</TableCell>
+                          </TableRow>
+                        );
+                      })
+                  )}
+                </TableBody>
+              </Table>
+            </Box>
+          </Scrollbar>
+          <Divider sx={{ marginTop: 2 }} />
+        </Card>
       </Box>
     </>
   );
