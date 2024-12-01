@@ -28,6 +28,11 @@ export const thongKeByTour = (id) => {
   return axios.get(url);
 };
 
+export const statistics = () => {
+  let url = PATH + "/statistics";
+  return axios.get(url);
+};
+
 export const thongKeCard = (payload) => {
   let config = {
     params: { ...payload },
