@@ -20,11 +20,14 @@ import { useEffect, useState } from "react";
 import { statistics, goals } from "src/view/Tournaments/TournamentsServices";
 import { getTopScorers } from "src/view/ManageCalendar/ManageCalendarServices";
 import { HeaderHomepage } from "src/layouts/dashboard/header"; // Import Header
+import { getAllTournaments } from "src/view/Tournaments/TournamentsServices";
+import { format } from "date-fns";
 
 const Homepage = () => {
   const [listItems, setlistItems] = useState([]);
   const [listItemsScores, setlistItemsScores] = useState([]);
   const [listItemsGoals, setlistItemsGoals] = useState([]);
+  const [listItemsTournaments, setlistItemsTournaments] = useState([]);
 
   const getStatistics = async () => {
     try {
@@ -61,10 +64,18 @@ const Homepage = () => {
     } catch (error) {}
   };
 
+  const tournaments = async () => {
+    try {
+      const data = await getAllTournaments();
+      setlistItemsTournaments(data?.data);
+    } catch (error) {}
+  };
+
   useEffect(() => {
     getGoals();
     getStatistics();
     scorers();
+    tournaments();
   }, []);
 
   return (
@@ -99,7 +110,7 @@ const Homepage = () => {
                     {["Team Name", "Matches", "Total Wins", "Points", "Tournaments"].map((header, index) => (
                       <TableCell
                         key={index}
-                        align="center"
+                        align={index === 0 ? "left" : "center"}
                         sx={{
                           backgroundColor: "#EBEEFE",
                           fontWeight: "bold",
@@ -136,7 +147,7 @@ const Homepage = () => {
                             }}
                           >
                             <TableCell
-                              align="center"
+                              align="left"
                               sx={{
                                 maxWidth: "200px",
                                 wordBreak: "break-word",
@@ -304,6 +315,94 @@ const Homepage = () => {
           </Scrollbar>
           <Divider sx={{ marginTop: 2 }} />
         </Card>
+
+        {/* Card for Tournaments */}
+        <Card
+          sx={{
+            borderRadius: 2,
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+            marginBottom: 4,
+            padding: 3,
+          }}
+        >
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <CardHeader
+              title="Tournaments"
+              titleTypographyProps={{
+                variant: "h5",
+                sx: { fontWeight: "bold", color: "#333" },
+              }}
+            />
+          </Box>
+          <Scrollbar sx={{ flexGrow: 1 }}>
+            <Box>
+              <Table sx={{ borderCollapse: "collapse", width: "100%" }}>
+                <TableHead>
+                  <TableRow>
+                    {["Tournaments", "Start Date", "End Date"].map((header, index) => (
+                      <TableCell
+                        key={index}
+                        align={index === 0 ? "left" : "center"}
+                        sx={{
+                          backgroundColor: "#EBEEFE",
+                          fontWeight: "bold",
+                          fontSize: "16px",
+                          color: "#555",
+                          padding: "12px 16px",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {header}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {listItemsTournaments.length <= 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={5} align="center">
+                        <Typography variant="body1" sx={{ color: "gray", padding: 3 }}>
+                          No data found
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    listItemsTournaments
+                      .sort((a, b) => b?.point - a?.point)
+                      ?.map((tournament) => {
+                        return (
+                          <TableRow
+                            hover
+                            key={tournament?.id}
+                            sx={{
+                              "&:hover": { backgroundColor: "#f9f9f9" },
+                            }}
+                          >
+                            <TableCell
+                              align="left"
+                              sx={{
+                                maxWidth: "200px",
+                                wordBreak: "break-word",
+                                fontWeight: "500",
+                                color: "#333",
+                                padding: "12px 16px",
+                              }}
+                            >
+                              {tournament.tournamentsName}
+                            </TableCell>
+                            <TableCell align="center">{format(new Date(tournament?.startDate), "dd/MM/yyyy")}</TableCell>
+                            <TableCell align="center">{format(new Date(tournament?.endDate), "dd/MM/yyyy")}</TableCell>
+                          </TableRow>
+                        );
+                      })
+                  )}
+                </TableBody>
+              </Table>
+            </Box>
+          </Scrollbar>
+          <Divider sx={{ marginTop: 2 }} />
+        </Card>
+
       </Box>
     </>
   );
