@@ -1,15 +1,12 @@
 import { Box, Button, Stack } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
 
-export const Header = (props) => {
-  const navigate = useNavigate(); // Khởi tạo useNavigate
-
+export const HeaderHomepage = (props) => {
   const handleButtonClick = () => {
-    navigate("/"); // Điều hướng sang trang chủ
+    window.location.href = "/";
   };
 
   return (
@@ -28,6 +25,7 @@ export const Header = (props) => {
             lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
           },
           zIndex: (theme) => theme.zIndex.appBar,
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Thêm shadow nhẹ
         }}
         className="banner-logo"
       >
@@ -41,19 +39,35 @@ export const Header = (props) => {
             px: 2,
           }}
         >
-          <Stack alignItems="center" direction="row" spacing={2}>
-            <Button
-              onClick={handleButtonClick} // Gọi hàm khi nhấn vào nút
-              sx={{
-                cursor: "pointer",
-                height: 40,
-                width: 40,
-              }}
-              title="Sign in"
-            >
-              Sign In
-            </Button>
-          </Stack>
+          <Box
+            component="div"
+            sx={{
+              fontSize: "20px",
+              fontWeight: "bold",
+              color: "#ffffff",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            Football Tournament Management System
+          </Box>
+          <Button
+            onClick={handleButtonClick}
+            sx={{
+              backgroundColor: "#3f51b5",
+              color: "#fff",
+              fontSize: "14px",
+              fontWeight: "bold",
+              textTransform: "none", // Giữ chữ không viết hoa
+              padding: "8px 16px",
+              borderRadius: "8px",
+              "&:hover": {
+                backgroundColor: "#303f9f", // Màu khi hover
+              },
+            }}
+          >
+            Sign In
+          </Button>
         </Stack>
       </Box>
     </>
