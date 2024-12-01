@@ -33,6 +33,11 @@ export const statistics = () => {
   return axios.get(url);
 };
 
+export const goals = () => {
+  let url = PATH + "/goals";
+  return axios.get(url);
+};
+
 export const thongKeCard = (payload) => {
   let config = {
     params: { ...payload },

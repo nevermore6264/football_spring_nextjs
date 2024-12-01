@@ -17,15 +17,16 @@ import {
 import { Scrollbar } from "src/components/scrollbar";
 import { SeverityPill } from "src/components/severity-pill";
 import { useEffect, useState } from "react";
-import { statistics } from "src/view/Tournaments/TournamentsServices";
+import { statistics, goals } from "src/view/Tournaments/TournamentsServices";
 import { getTopScorers } from "src/view/ManageCalendar/ManageCalendarServices";
 import { HeaderHomepage } from "src/layouts/dashboard/header"; // Import Header
 
 const Homepage = () => {
   const [listItems, setlistItems] = useState([]);
   const [listItemsScores, setlistItemsScores] = useState([]);
+  const [listItemsGoals, setlistItemsGoals] = useState([]);
 
-  const getAllTournament = async () => {
+  const getStatistics = async () => {
     try {
       const data = await statistics();
       setlistItems(data?.data);
@@ -53,8 +54,16 @@ const Homepage = () => {
     } catch (error) {}
   };
 
+  const getGoals = async () => {
+    try {
+      const data = await goals();
+      setlistItemsGoals(data?.data);
+    } catch (error) {}
+  };
+
   useEffect(() => {
-    getAllTournament();
+    getGoals();
+    getStatistics();
     scorers();
   }, []);
 
@@ -64,6 +73,7 @@ const Homepage = () => {
       <HeaderHomepage />
 
       <Box sx={{ padding: 3 }}>
+        {/* Card for Match Statistics */}
         <Card
           sx={{
             borderRadius: 2,
@@ -72,13 +82,7 @@ const Homepage = () => {
             padding: 3,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <CardHeader
               title="Match Statistics"
               titleTypographyProps={{
@@ -89,35 +93,32 @@ const Homepage = () => {
           </Box>
           <Scrollbar sx={{ flexGrow: 1 }}>
             <Box>
-              <Table>
+              <Table sx={{ borderCollapse: "collapse", width: "100%" }}>
                 <TableHead>
                   <TableRow>
-                    {["Team Name", "Matches", "Total Wins", "Points", "Tournaments"].map(
-                      (header, index) => (
-                        <TableCell
-                          key={index}
-                          align="center"
-                          sx={{
-                            backgroundColor: "#EBEEFE",
-                            fontWeight: "bold",
-                            fontSize: "16px",
-                            color: "#555",
-                          }}
-                        >
-                          {header}
-                        </TableCell>
-                      )
-                    )}
+                    {["Team Name", "Matches", "Total Wins", "Points", "Tournaments"].map((header, index) => (
+                      <TableCell
+                        key={index}
+                        align="center"
+                        sx={{
+                          backgroundColor: "#EBEEFE",
+                          fontWeight: "bold",
+                          fontSize: "16px",
+                          color: "#555",
+                          padding: "12px 16px",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {header}
+                      </TableCell>
+                    ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {listItems.length <= 0 ? (
                     <TableRow>
                       <TableCell colSpan={5} align="center">
-                        <Typography
-                          variant="body1"
-                          sx={{ color: "gray", padding: 3 }}
-                        >
+                        <Typography variant="body1" sx={{ color: "gray", padding: 3 }}>
                           No data found
                         </Typography>
                       </TableCell>
@@ -141,6 +142,7 @@ const Homepage = () => {
                                 wordBreak: "break-word",
                                 fontWeight: "500",
                                 color: "#333",
+                                padding: "12px 16px",
                               }}
                             >
                               {order.teamName}
@@ -162,20 +164,16 @@ const Homepage = () => {
           <Divider sx={{ marginTop: 2 }} />
         </Card>
 
+        {/* Card for Top Scorers */}
         <Card
           sx={{
             borderRadius: 2,
             boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+            marginBottom: 4,
             padding: 3,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <CardHeader
               title="Top Scorers"
               titleTypographyProps={{
@@ -229,6 +227,81 @@ const Homepage = () => {
               );
             })}
           </List>
+          <Divider sx={{ marginTop: 2 }} />
+        </Card>
+
+        {/* Card for Goals Statistics */}
+        <Card
+          sx={{
+            borderRadius: 2,
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+            padding: 3,
+          }}
+        >
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <CardHeader
+              title="Goals Statistics"
+              titleTypographyProps={{
+                variant: "h5",
+                sx: { fontWeight: "bold", color: "#333" },
+              }}
+            />
+          </Box>
+          <Scrollbar sx={{ flexGrow: 1 }}>
+            <Box>
+              <Table sx={{ borderCollapse: "collapse", width: "100%" }}>
+                <TableHead>
+                  <TableRow>
+                    {["Home Team", "Home Goals", "", "Yellow Card Home", "Tournament"].map((header, index) => (
+                      <TableCell
+                        key={index}
+                        align={index === 0 ? "left" : "center"}
+                        sx={{
+                          backgroundColor: "#EBEEFE",
+                          fontWeight: "bold",
+                          color: "#333",
+                          fontSize: "16px",
+                          padding: "12px 16px",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {header}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {listItemsGoals.length <= 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={5} align="center" sx={{ padding: "20px" }}>
+                        <Typography variant="body1" sx={{ color: "gray" }}>
+                          No data found
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    listItemsGoals
+                      .sort((a, b) => b?.point - a?.point)
+                      ?.map((goal) => (
+                        <TableRow
+                          hover
+                          key={goal.id}
+                          sx={{ "&:hover": { backgroundColor: "#f9f9f9" } }}
+                        >
+                          <TableCell sx={{ minWidth: "150px", padding: "12px 16px" }}>
+                            {goal.homeTeamName}
+                          </TableCell>
+                          <TableCell align="center">{goal.totalGoalHome}</TableCell>
+                          <TableCell align="center">{goal.totalRedHome}</TableCell>
+                          <TableCell align="center">{goal.totalYellowHome}</TableCell>
+                          <TableCell align="center">{goal.nametour}</TableCell>
+                        </TableRow>
+                      ))
+                  )}
+                </TableBody>
+              </Table>
+            </Box>
+          </Scrollbar>
           <Divider sx={{ marginTop: 2 }} />
         </Card>
       </Box>
