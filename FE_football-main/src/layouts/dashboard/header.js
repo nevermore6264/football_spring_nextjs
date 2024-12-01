@@ -1,14 +1,10 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 
-const SIDE_NAV_WIDTH = 280;
+const SIDE_NAV_WIDTH = 0;
 const TOP_NAV_HEIGHT = 64;
 
 export const HeaderHomepage = (props) => {
-  const handleButtonClick = () => {
-    window.location.href = "/";
-  };
-
   return (
     <>
       <Box
@@ -25,15 +21,13 @@ export const HeaderHomepage = (props) => {
             lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
           },
           zIndex: (theme) => theme.zIndex.appBar,
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Thêm shadow nhẹ
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Shadow nhẹ
         }}
         className="banner-logo"
       >
         <Stack
           alignItems="center"
-          direction="row"
-          justifyContent="space-between"
-          spacing={2}
+          justifyContent="center" // Đặt nội dung ở giữa
           sx={{
             minHeight: TOP_NAV_HEIGHT,
             px: 2,
@@ -42,32 +36,14 @@ export const HeaderHomepage = (props) => {
           <Box
             component="div"
             sx={{
-              fontSize: "20px",
+              fontSize: "36px", // Làm chữ to hơn
               fontWeight: "bold",
               color: "#ffffff",
-              display: "flex",
-              alignItems: "center",
+              textAlign: "center", // Căn giữa chữ
             }}
           >
             Football Tournament Management System
           </Box>
-          <Button
-            onClick={handleButtonClick}
-            sx={{
-              backgroundColor: "#3f51b5",
-              color: "#fff",
-              fontSize: "14px",
-              fontWeight: "bold",
-              textTransform: "none", // Giữ chữ không viết hoa
-              padding: "8px 16px",
-              borderRadius: "8px",
-              "&:hover": {
-                backgroundColor: "#303f9f", // Màu khi hover
-              },
-            }}
-          >
-            Sign In
-          </Button>
         </Stack>
       </Box>
     </>

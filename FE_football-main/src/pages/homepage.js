@@ -3,6 +3,7 @@ import {
   Card,
   CardHeader,
   Divider,
+  Grid,
   List,
   ListItem,
   ListItemAvatar,
@@ -187,71 +188,133 @@ const Homepage = () => {
           <Divider sx={{ marginTop: 2 }} />
         </Card>
 
-        {/* Card for Top Scorers */}
-        <Card
-          sx={{
-            borderRadius: 2,
-            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-            marginBottom: 4,
-            padding: 3,
-          }}
-        >
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <CardHeader
-              title="Top Scorers"
-              titleTypographyProps={{
-                variant: "h5",
-                sx: { fontWeight: "bold", color: "#333" },
+        <Grid container spacing={3}>
+          <Grid
+            item
+            xs={12}
+            md={4}
+            sx={{
+              marginBottom: 4,
+            }}
+          >
+            <Card
+              sx={{
+                borderRadius: 2,
+                boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+                padding: 3,
               }}
-            />
-          </Box>
-          <List>
-            {listItemsScores.map((score, index) => {
-              const hasDivider = index < listItemsScores.length - 1;
-              const goal = score?.goal;
-              return (
-                <ListItem divider={hasDivider} key={score.id}>
-                  <ListItemAvatar>
-                    {score.image ? (
-                      <Box
-                        component="img"
-                        src={score.image}
-                        sx={{
-                          borderRadius: "50%",
-                          height: 48,
-                          width: 48,
-                          border: "2px solid #ddd",
+            >
+              <CardHeader
+                title="Top Scorers"
+                titleTypographyProps={{
+                  variant: "h5",
+                  sx: { fontWeight: "bold", color: "#333" },
+                }}
+              />
+              <List>
+                {listItemsScores.map((score, index) => {
+                  const hasDivider = index < listItemsScores.length - 1;
+                  return (
+                    <ListItem divider={hasDivider} key={score.id}>
+                      <ListItemAvatar>
+                        {score.image ? (
+                          <Box
+                            component="img"
+                            src={score.image}
+                            sx={{
+                              borderRadius: "50%",
+                              height: 48,
+                              width: 48,
+                              border: "2px solid #ddd",
+                            }}
+                          />
+                        ) : (
+                          <Box
+                            sx={{
+                              borderRadius: "50%",
+                              backgroundColor: "neutral.200",
+                              height: 48,
+                              width: 48,
+                            }}
+                          />
+                        )}
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={score.name}
+                        primaryTypographyProps={{
+                          variant: "subtitle1",
+                          sx: { fontWeight: "500", color: "#333" },
+                        }}
+                        secondary={`Got ${score.goal} goals`}
+                        secondaryTypographyProps={{
+                          variant: "body2",
+                          sx: { color: "#666" },
                         }}
                       />
-                    ) : (
-                      <Box
-                        sx={{
-                          borderRadius: "50%",
-                          backgroundColor: "neutral.200",
-                          height: 48,
-                          width: 48,
-                        }}
-                      />
-                    )}
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={score.name}
-                    primaryTypographyProps={{
-                      variant: "subtitle1",
-                      sx: { fontWeight: "500", color: "#333" },
-                    }}
-                    secondary={`Got ${goal} goals`}
-                    secondaryTypographyProps={{
-                      variant: "body2",
-                      sx: { color: "#666" },
-                    }}
-                  />
-                </ListItem>
-              );
-            })}
-          </List>
-          <Divider sx={{ marginTop: 2 }} />
-        </Card>
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} md={8}>
+            <Card
+              sx={{
+                borderRadius: 2,
+                boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+                padding: 3,
+              }}
+            >
+              <CardHeader
+                title="Players"
+                titleTypographyProps={{
+                  variant: "h5",
+                  sx: { fontWeight: "bold", color: "#333" },
+                }}
+              />
+              <Scrollbar>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {["Full name", "Team", "Position", "Jersey Number", "Date of birth"].map(
+                        (header, index) => (
+                          <TableCell
+                            key={index}
+                            align={index === 0 ? "left" : "center"}
+                            sx={{
+                              backgroundColor: "#EBEEFE",
+                              fontWeight: "bold",
+                              fontSize: "16px",
+                              color: "#555",
+                              padding: "12px 16px",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            {header}
+                          </TableCell>
+                        )
+                      )}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {listItemsPlayers.map((player) => (
+                      <TableRow key={player.id} hover>
+                        <TableCell align="left">{player.fullName}</TableCell>
+                        <TableCell align="center">{player?.team?.teamName}</TableCell>
+                        <TableCell align="center">{player.position}</TableCell>
+                        <TableCell align="center">{player.jerseyNumber}</TableCell>
+                        <TableCell align="center">
+                          {format(new Date(player?.dateOfBirth), "dd/MM/yyyy")}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Scrollbar>
+            </Card>
+          </Grid>
+        </Grid>
 
         {/* Card for Goals Statistics */}
         <Card
@@ -410,116 +473,6 @@ const Homepage = () => {
                             <TableCell align="center">
                               {format(new Date(tournament?.endDate), "dd/MM/yyyy")}
                             </TableCell>
-                          </TableRow>
-                        );
-                      })
-                  )}
-                </TableBody>
-              </Table>
-            </Box>
-          </Scrollbar>
-          <Divider sx={{ marginTop: 2 }} />
-        </Card>
-
-        {/* Card for Players */}
-        <Card
-          sx={{
-            borderRadius: 2,
-            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-            marginBottom: 4,
-            padding: 3,
-          }}
-        >
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <CardHeader
-              title="Players"
-              titleTypographyProps={{
-                variant: "h5",
-                sx: { fontWeight: "bold", color: "#333" },
-              }}
-            />
-          </Box>
-          <Scrollbar sx={{ flexGrow: 1 }}>
-            <Box>
-              <Table sx={{ borderCollapse: "collapse", width: "100%" }}>
-                <TableHead>
-                  <TableRow>
-                    {[
-                      "Full name",
-                      "The team is competing",
-                      "Position",
-                      "Jersey Number",
-                      "Date of birth",
-                      "Country",
-                      "Email",
-                      "Phone",
-                      "Height",
-                      "Weight",
-                      "Contract Start Date",
-                      "Contract End Date",
-                      "Action",
-                    ].map((header, index) => (
-                      <TableCell
-                        key={index}
-                        align={index === 0 ? "left" : "center"}
-                        sx={{
-                          backgroundColor: "#EBEEFE",
-                          fontWeight: "bold",
-                          fontSize: "16px",
-                          color: "#555",
-                          padding: "12px 16px",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {header}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {listItemsPlayers.length <= 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={5} align="center">
-                        <Typography variant="body1" sx={{ color: "gray", padding: 3 }}>
-                          No data found
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    listItemsPlayers
-                      .sort((a, b) => b?.point - a?.point)
-                      ?.map((order) => {
-                        return (
-                          <TableRow
-                            hover
-                            key={order?.id}
-                            sx={{
-                              "&:hover": { backgroundColor: "#f9f9f9" },
-                            }}
-                          >
-                            <TableCell
-                              align="left"
-                              sx={{
-                                maxWidth: "200px",
-                                wordBreak: "break-word",
-                                fontWeight: "500",
-                                color: "#333",
-                                padding: "12px 16px",
-                              }}
-                            >
-                              {order.fullName}
-                            </TableCell>
-                            <TableCell align="center">{order?.team?.teamName}</TableCell>
-                            <TableCell align="center">{order?.position}</TableCell>
-                            <TableCell align="center">{order?.jerseyNumber}</TableCell>
-                            <TableCell align="center">{order?.dateOfBirth}</TableCell>
-                            <TableCell align="center">{order?.country}</TableCell>
-                            <TableCell align="center">{order?.email}</TableCell>
-                            <TableCell align="center">{order?.phone}</TableCell>
-                            <TableCell align="center">{order?.height}</TableCell>
-                            <TableCell align="center">{order?.weight}</TableCell>
-                            <TableCell align="center">{order?.contractStartDate}</TableCell>
-                            <TableCell align="center">{order?.contractEndDate}</TableCell>
                           </TableRow>
                         );
                       })
