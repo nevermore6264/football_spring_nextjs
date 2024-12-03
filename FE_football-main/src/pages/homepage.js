@@ -19,11 +19,15 @@ import { Scrollbar } from "src/components/scrollbar";
 import { SeverityPill } from "src/components/severity-pill";
 import { useEffect, useState } from "react";
 import { statistics, goals } from "src/view/Tournaments/TournamentsServices";
-import { HeaderHomepage } from "src/layouts/dashboard/header"; // Import Header
+import { HeaderHomepage } from "src/layouts/dashboard/header";
+import { FooterHomepage } from "src/layouts/dashboard/footer";
+import { Ads } from "src/layouts/dashboard/ads";
+
 import { getAllTournaments } from "src/view/Tournaments/TournamentsServices";
 import { format } from "date-fns";
 import { getAllPlayer } from "src/view/ManagePlayer/ManagePlayerServices";
 import { getAllMatch, getTopScorers } from "src/view/ManageCalendar/ManageCalendarServices";
+import { padding } from "@mui/system";
 
 const Homepage = () => {
   const [listItems, setlistItems] = useState([]);
@@ -71,7 +75,7 @@ const Homepage = () => {
   const matches = async () => {
     try {
       const data = await getAllMatch();
-      setlistItemsMatches(data?.data.filter(match => match.loaiTranDau === "chinhthuc"));
+      setlistItemsMatches(data?.data.filter((match) => match.loaiTranDau === "chinhthuc"));
     } catch (error) {}
   };
 
@@ -98,22 +102,42 @@ const Homepage = () => {
     matches();
   }, []);
 
+  const cardStyle = {
+    borderRadius: 2,
+    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+    marginBottom: 4,
+    padding: 3,
+    background:
+      "#232324 url(https://xoilacziv.tv/wp-content/themes/bongda/dist/images/bg-match/bg-match.png) no-repeat bottom",
+  };
+
+  const headerStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 0,
+  };
+
   return (
-    <>
-      {/* Thêm Header */}
+    <div className="homepage">
       <HeaderHomepage />
+
+      <Box
+        component="img"
+        src="https://cdn.lfastcdn.com/2024/11/13asd8.gif"
+        alt="8XBET A PC"
+        sx={{
+          marginTop: 3,
+          width: "100%", // Ensures the image is responsive
+          height: "auto", // Maintains aspect ratio
+          display: "block", // Removes any default inline styling gaps
+        }}
+      />
 
       <Box sx={{ padding: 3 }}>
         {/* Card for Match Statistics */}
-        <Card
-          sx={{
-            borderRadius: 2,
-            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-            marginBottom: 4,
-            padding: 3,
-          }}
-        >
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Card sx={cardStyle}>
+          <Box sx={headerStyle}>
             <CardHeader
               title="Match Statistics"
               titleTypographyProps={{
@@ -133,7 +157,6 @@ const Homepage = () => {
                           key={index}
                           align={index === 0 ? "left" : "center"}
                           sx={{
-                            backgroundColor: "#EBEEFE",
                             fontWeight: "bold",
                             fontSize: "16px",
                             color: "#555",
@@ -206,13 +229,7 @@ const Homepage = () => {
               marginBottom: 4,
             }}
           >
-            <Card
-              sx={{
-                borderRadius: 2,
-                boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-                padding: 3,
-              }}
-            >
+            <Card sx={cardStyle}>
               <CardHeader
                 title="Top Scorers"
                 titleTypographyProps={{
@@ -268,13 +285,7 @@ const Homepage = () => {
           </Grid>
 
           <Grid item xs={12} md={8}>
-            <Card
-              sx={{
-                borderRadius: 2,
-                boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-                padding: 3,
-              }}
-            >
+            <Card sx={cardStyle}>
               <CardHeader
                 title="Players"
                 titleTypographyProps={{
@@ -292,7 +303,6 @@ const Homepage = () => {
                             key={index}
                             align={index === 0 ? "left" : "center"}
                             sx={{
-                              backgroundColor: "#EBEEFE",
                               fontWeight: "bold",
                               fontSize: "16px",
                               color: "#555",
@@ -326,13 +336,7 @@ const Homepage = () => {
         </Grid>
 
         {/* Card for Goals Statistics */}
-        <Card
-          sx={{
-            borderRadius: 2,
-            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-            padding: 3,
-          }}
-        >
+        <Card sx={cardStyle}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <CardHeader
               title="Goals Statistics"
@@ -403,14 +407,7 @@ const Homepage = () => {
         </Card>
 
         {/* Card for Tournaments */}
-        <Card
-          sx={{
-            borderRadius: 2,
-            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-            marginBottom: 4,
-            padding: 3,
-          }}
-        >
+        <Card sx={cardStyle}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <CardHeader
               title="Tournaments"
@@ -494,13 +491,7 @@ const Homepage = () => {
         </Card>
 
         {/* Card for Official match schedule */}
-        <Card
-          sx={{
-            borderRadius: 2,
-            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-            padding: 3,
-          }}
-        >
+        <Card sx={cardStyle}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <CardHeader
               title="Official match schedule"
@@ -515,24 +506,28 @@ const Homepage = () => {
               <Table sx={{ borderCollapse: "collapse", width: "100%" }}>
                 <TableHead>
                   <TableRow>
-                    {["Match Date", "Home Team", "Away Team", "Home Team Score", "Away Team Score"].map(
-                      (header, index) => (
-                        <TableCell
-                          key={index}
-                          align={index === 0 ? "left" : "center"}
-                          sx={{
-                            backgroundColor: "#EBEEFE",
-                            fontWeight: "bold",
-                            color: "#333",
-                            fontSize: "16px",
-                            padding: "12px 16px",
-                            textTransform: "uppercase",
-                          }}
-                        >
-                          {header}
-                        </TableCell>
-                      )
-                    )}
+                    {[
+                      "Match Date",
+                      "Home Team",
+                      "Away Team",
+                      "Home Team Score",
+                      "Away Team Score",
+                    ].map((header, index) => (
+                      <TableCell
+                        key={index}
+                        align={index === 0 ? "left" : "center"}
+                        sx={{
+                          backgroundColor: "#EBEEFE",
+                          fontWeight: "bold",
+                          color: "#333",
+                          fontSize: "16px",
+                          padding: "12px 16px",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {header}
+                      </TableCell>
+                    ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -570,7 +565,9 @@ const Homepage = () => {
           <Divider sx={{ marginTop: 2 }} />
         </Card>
       </Box>
-    </>
+      <FooterHomepage />
+      <Ads />
+    </div>
   );
 };
 

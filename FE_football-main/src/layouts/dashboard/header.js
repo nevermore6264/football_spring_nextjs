@@ -1,5 +1,4 @@
 import { Box, Stack } from "@mui/material";
-import { alpha } from "@mui/material/styles";
 
 const SIDE_NAV_WIDTH = 0;
 const TOP_NAV_HEIGHT = 64;
@@ -10,8 +9,8 @@ export const HeaderHomepage = (props) => {
       <Box
         component="header"
         sx={{
-          backdropFilter: "blur(6px)",
-          backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
+          background:
+            "linear-gradient(113deg, #1553ef 7.37%, #0c3089 57.22%, #0b2a79 66.05%, #000 131.67%)",
           position: "sticky",
           left: {
             lg: `${SIDE_NAV_WIDTH}px`,
@@ -21,25 +20,39 @@ export const HeaderHomepage = (props) => {
             lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
           },
           zIndex: (theme) => theme.zIndex.appBar,
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Shadow nhẹ
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Subtle shadow
         }}
-        className="banner-logo"
       >
         <Stack
+          direction="row"
           alignItems="center"
-          justifyContent="center" // Đặt nội dung ở giữa
+          justifyContent="space-between" // Align logo to the left and text to the center
           sx={{
             minHeight: TOP_NAV_HEIGHT,
-            px: 2,
+            px: 3,
           }}
         >
+          {/* Logo Section */}
+          <Box
+            component="img"
+            src="https://w7.pngwing.com/pngs/356/930/png-transparent-green-cleat-and-soccer-ball-illustration-english-football-league-logo-football-boot-sport-high-resolution-football-grass-sports-equipment-adidas.png"
+            alt="Logo"
+            sx={{
+              height: 40,
+              width: "auto",
+            }}
+          />
+
+          {/* Title Section */}
           <Box
             component="div"
             sx={{
-              fontSize: "36px", // Làm chữ to hơn
+              fontSize: "24px", // Font size of the title
               fontWeight: "bold",
               color: "#ffffff",
-              textAlign: "center", // Căn giữa chữ
+              textAlign: "center",
+              flex: 1, // Allow the text to take available space
+              marginLeft: 2,
             }}
           >
             Football Tournament Management System
