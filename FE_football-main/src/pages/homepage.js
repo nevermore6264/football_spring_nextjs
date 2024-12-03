@@ -19,11 +19,11 @@ import { Scrollbar } from "src/components/scrollbar";
 import { SeverityPill } from "src/components/severity-pill";
 import { useEffect, useState } from "react";
 import { statistics, goals } from "src/view/Tournaments/TournamentsServices";
-import { getTopScorers } from "src/view/ManageCalendar/ManageCalendarServices";
 import { HeaderHomepage } from "src/layouts/dashboard/header"; // Import Header
 import { getAllTournaments } from "src/view/Tournaments/TournamentsServices";
 import { format } from "date-fns";
 import { getAllPlayer } from "src/view/ManagePlayer/ManagePlayerServices";
+import { getAllMatch, getTopScorers } from "src/view/ManageCalendar/ManageCalendarServices";
 
 const Homepage = () => {
   const [listItems, setlistItems] = useState([]);
@@ -31,6 +31,7 @@ const Homepage = () => {
   const [listItemsGoals, setlistItemsGoals] = useState([]);
   const [listItemsTournaments, setlistItemsTournaments] = useState([]);
   const [listItemsPlayers, setlistItemsPlayers] = useState([]);
+  const [listItemsMatches, setlistItemsMatches] = useState([]);
 
   const getStatistics = async () => {
     try {
@@ -67,6 +68,13 @@ const Homepage = () => {
     } catch (error) {}
   };
 
+  const matches = async () => {
+    try {
+      const data = await getAllMatch();
+      setlistItemsMatches(data?.data.filter(match => match.loaiTranDau === "chinhthuc"));
+    } catch (error) {}
+  };
+
   const tournaments = async () => {
     try {
       const data = await getAllTournaments();
@@ -87,6 +95,7 @@ const Homepage = () => {
     scorers();
     tournaments();
     players();
+    matches();
   }, []);
 
   return (
@@ -476,6 +485,83 @@ const Homepage = () => {
                           </TableRow>
                         );
                       })
+                  )}
+                </TableBody>
+              </Table>
+            </Box>
+          </Scrollbar>
+          <Divider sx={{ marginTop: 2 }} />
+        </Card>
+
+        {/* Card for Official match schedule */}
+        <Card
+          sx={{
+            borderRadius: 2,
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+            padding: 3,
+          }}
+        >
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <CardHeader
+              title="Official match schedule"
+              titleTypographyProps={{
+                variant: "h5",
+                sx: { fontWeight: "bold", color: "#333" },
+              }}
+            />
+          </Box>
+          <Scrollbar sx={{ flexGrow: 1 }}>
+            <Box>
+              <Table sx={{ borderCollapse: "collapse", width: "100%" }}>
+                <TableHead>
+                  <TableRow>
+                    {["Match Date", "Home Team", "Away Team", "Home Team Score", "Away Team Score"].map(
+                      (header, index) => (
+                        <TableCell
+                          key={index}
+                          align={index === 0 ? "left" : "center"}
+                          sx={{
+                            backgroundColor: "#EBEEFE",
+                            fontWeight: "bold",
+                            color: "#333",
+                            fontSize: "16px",
+                            padding: "12px 16px",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {header}
+                        </TableCell>
+                      )
+                    )}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {listItemsMatches.length <= 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={5} align="center" sx={{ padding: "20px" }}>
+                        <Typography variant="body1" sx={{ color: "gray" }}>
+                          No data found
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    listItemsMatches
+                      .sort((a, b) => b?.point - a?.point)
+                      ?.map((match) => (
+                        <TableRow
+                          hover
+                          key={match.id}
+                          sx={{ "&:hover": { backgroundColor: "#f9f9f9" } }}
+                        >
+                          <TableCell sx={{ minWidth: "150px", padding: "12px 16px" }}>
+                            {format(new Date(match?.matchDate), "dd/MM/yyyy")}
+                          </TableCell>
+                          <TableCell align="center">{match.homeTeam.teamName}</TableCell>
+                          <TableCell align="center">{match.awayTeam.teamAwayName}</TableCell>
+                          <TableCell align="center">{match.homeTeamScore}</TableCell>
+                          <TableCell align="center">{match.awayTeamScore}</TableCell>
+                        </TableRow>
+                      ))
                   )}
                 </TableBody>
               </Table>
