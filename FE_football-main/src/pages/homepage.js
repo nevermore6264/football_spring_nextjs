@@ -27,7 +27,6 @@ import { getAllTournaments } from "src/view/Tournaments/TournamentsServices";
 import { format } from "date-fns";
 import { getAllPlayer } from "src/view/ManagePlayer/ManagePlayerServices";
 import { getAllMatch, getTopScorers } from "src/view/ManageCalendar/ManageCalendarServices";
-import { padding } from "@mui/system";
 
 const Homepage = () => {
   const [listItems, setlistItems] = useState([]);
@@ -217,7 +216,6 @@ const Homepage = () => {
               </Table>
             </Box>
           </Scrollbar>
-          <Divider sx={{ marginTop: 2 }} />
         </Card>
 
         <Grid container spacing={3}>
@@ -403,7 +401,6 @@ const Homepage = () => {
               </Table>
             </Box>
           </Scrollbar>
-          <Divider sx={{ marginTop: 2 }} />
         </Card>
 
         {/* Card for Tournaments */}
@@ -487,7 +484,6 @@ const Homepage = () => {
               </Table>
             </Box>
           </Scrollbar>
-          <Divider sx={{ marginTop: 2 }} />
         </Card>
 
         {/* Card for Official match schedule */}
@@ -565,6 +561,17 @@ const Homepage = () => {
           <Divider sx={{ marginTop: 2 }} />
         </Card>
       </Box>
+      <iframe
+        src="https://chatboxn.com/room/6362206e7e42f3850b75692c/football"
+        width="100%"
+        height="513"
+        allowtransparency="yes"
+        allow="autoplay"
+        frameborder="0"
+        marginheight="0"
+        marginwidth="0"
+        scrolling="auto"
+      ></iframe>
       <FooterHomepage />
       <Ads />
     </div>
