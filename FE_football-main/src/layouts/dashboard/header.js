@@ -35,10 +35,10 @@ export const HeaderHomepage = (props) => {
           {/* Logo Section */}
           <Box
             component="img"
-            src="https://w7.pngwing.com/pngs/356/930/png-transparent-green-cleat-and-soccer-ball-illustration-english-football-league-logo-football-boot-sport-high-resolution-football-grass-sports-equipment-adidas.png"
+            src="https://png.pngtree.com/png-clipart/20231214/ourmid/pngtree-world-cup-black-and-white-cartoon-football-banner-border-png-image_11332813.png"
             alt="Logo"
             sx={{
-              height: 40,
+              height: 100,
               width: "auto",
             }}
           />

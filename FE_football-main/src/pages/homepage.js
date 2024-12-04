@@ -333,6 +333,19 @@ const Homepage = () => {
           </Grid>
         </Grid>
 
+        <Box
+          component="img"
+          src="https://xoilacpt.top/wp-content/uploads/2024/05/cac-cau-hoi-thac-mac-thuong-gap-cua-XoilacTV.webp"
+          alt="8XBET A PC"
+          sx={{
+            marginTop: 3,
+            width: "100%",
+            height: "auto",
+            display: "block",
+            marginBottom: 3,
+          }}
+        />
+
         {/* Card for Goals Statistics */}
         <Card sx={cardStyle}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
