@@ -1,4 +1,4 @@
-package com.example.QuanLyDoiBong.dto;
+package com.example.QuanLyDoiBong.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardDTO {
+public class CardRequest {
     private int idcard;
     private int idmatch;
     private int idplayer;

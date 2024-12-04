@@ -1,7 +1,7 @@
 package com.example.QuanLyDoiBong.services.impl;
 
-import com.example.QuanLyDoiBong.dto.MatchDTO;
-import com.example.QuanLyDoiBong.dto.ThongKeMatch;
+import com.example.QuanLyDoiBong.dto.request.MatchRequest;
+import com.example.QuanLyDoiBong.dto.response.ThongKeMatchResponse;
 import com.example.QuanLyDoiBong.dto.response.MathStatisticsResponse;
 import com.example.QuanLyDoiBong.entity.AwayTeam;
 import com.example.QuanLyDoiBong.entity.Match;
@@ -49,7 +49,7 @@ public class MatchesServiceImpl implements MatchesService {
     }
 
     @Override
-    public ResponseEntity<Object> insertMacth(MatchDTO match) {
+    public ResponseEntity<Object> insertMacth(MatchRequest match) {
         try {
             Tournament getTour = tournamentRepository.findById(match.getIDTournament()).get();
             Team homeTeam = teamRepository.findById(match.getHomeTeamID()).get();
@@ -77,7 +77,7 @@ public class MatchesServiceImpl implements MatchesService {
     }
 
     @Override
-    public ResponseEntity<Object> updateMacth(MatchDTO match) {
+    public ResponseEntity<Object> updateMacth(MatchRequest match) {
         try {
             Tournament getTour = tournamentRepository.findById(match.getIDTournament()).get();
             Team homeTeam = teamRepository.findById(match.getHomeTeamID()).get();
@@ -125,21 +125,21 @@ public class MatchesServiceImpl implements MatchesService {
     }
 
     @Override
-    public ResponseEntity<List<ThongKeMatch>> thongKe(int IDTour) {
+    public ResponseEntity<List<ThongKeMatchResponse>> thongKe(int IDTour) {
         List<Object[]> thongKeList = matchRepository.thongKe(IDTour);
 
-        List<ThongKeMatch> result = thongKeList.stream()
+        List<ThongKeMatchResponse> result = thongKeList.stream()
                 .map(obj -> {
-                    ThongKeMatch thongKeMatch = new ThongKeMatch();
-                    thongKeMatch.setTeamName((String) obj[0]);
-                    thongKeMatch.setSoTranDaDau(((Number) obj[1]).intValue()); // Sử dụng Number.intValue() để chuyển đổi sang int
-                    thongKeMatch.setSoBanThua(((Number) obj[2]).intValue());
-                    thongKeMatch.setSoBanThang(((Number) obj[3]).intValue());
-                    thongKeMatch.setTongSoTranThang(((Number) obj[4]).intValue());
-                    thongKeMatch.setTongSoTranThua(((Number) obj[5]).intValue());
-                    thongKeMatch.setTongSoTranHoa(((Number) obj[6]).intValue());
-                    thongKeMatch.setPoint(((Number) obj[7]).intValue());
-                    return thongKeMatch;
+                    ThongKeMatchResponse thongKeMatchResponse = new ThongKeMatchResponse();
+                    thongKeMatchResponse.setTeamName((String) obj[0]);
+                    thongKeMatchResponse.setSoTranDaDau(((Number) obj[1]).intValue()); // Sử dụng Number.intValue() để chuyển đổi sang int
+                    thongKeMatchResponse.setSoBanThua(((Number) obj[2]).intValue());
+                    thongKeMatchResponse.setSoBanThang(((Number) obj[3]).intValue());
+                    thongKeMatchResponse.setTongSoTranThang(((Number) obj[4]).intValue());
+                    thongKeMatchResponse.setTongSoTranThua(((Number) obj[5]).intValue());
+                    thongKeMatchResponse.setTongSoTranHoa(((Number) obj[6]).intValue());
+                    thongKeMatchResponse.setPoint(((Number) obj[7]).intValue());
+                    return thongKeMatchResponse;
                 })
                 .collect(Collectors.toList());
 
@@ -186,7 +186,7 @@ public class MatchesServiceImpl implements MatchesService {
     }
 
     @Override
-    public List<Match> getByCaculate(Date tuNgay, Date denNgay, int idTour) {
+    public List<Match> getByCalculate(Date tuNgay, Date denNgay, int idTour) {
         return matchRepository.getByCaculate(tuNgay, denNgay, idTour);
     }
 

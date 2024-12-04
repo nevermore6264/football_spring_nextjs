@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface AwayTeamServices {
     List<AwayTeam> getAlAwayTeam();
+
     ResponseEntity<Object> updateAwayTeam(AwayTeam teamAway);
+
     ResponseEntity<Object> deleteAwayTeam(int IDTeaAway);
+
     ResponseEntity<Object> insertAwayTeam(AwayTeam teamAway);
 }

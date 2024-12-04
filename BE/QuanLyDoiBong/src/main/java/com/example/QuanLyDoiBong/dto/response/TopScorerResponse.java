@@ -1,4 +1,4 @@
-package com.example.QuanLyDoiBong.dto;
+package com.example.QuanLyDoiBong.dto.response;
 
 import com.example.QuanLyDoiBong.entity.Player;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TopScorerDTO {
+public class TopScorerResponse {
     private Player player;
+
     private int goalsScored;
 }

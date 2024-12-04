@@ -1,7 +1,7 @@
 package com.example.QuanLyDoiBong.controller;
 
-import com.example.QuanLyDoiBong.dto.MatchDTO;
-import com.example.QuanLyDoiBong.dto.ThongKeMatch;
+import com.example.QuanLyDoiBong.dto.request.MatchRequest;
+import com.example.QuanLyDoiBong.dto.response.ThongKeMatchResponse;
 import com.example.QuanLyDoiBong.dto.response.MathStatisticsResponse;
 import com.example.QuanLyDoiBong.entity.Match;
 import com.example.QuanLyDoiBong.services.MatchesService;
@@ -39,13 +39,13 @@ public class MatchesController {
     }
 
     @PostMapping("/insertMatches")
-    public ResponseEntity<Object> insertMatch(@RequestBody MatchDTO matchDTO) {
-        return matchesService.insertMacth(matchDTO);
+    public ResponseEntity<Object> insertMatch(@RequestBody MatchRequest matchRequest) {
+        return matchesService.insertMacth(matchRequest);
     }
 
     @PutMapping("/updateMatches")
-    public ResponseEntity<Object> updateMatch(@RequestBody MatchDTO matchDTO) {
-        return matchesService.updateMacth(matchDTO);
+    public ResponseEntity<Object> updateMatch(@RequestBody MatchRequest matchRequest) {
+        return matchesService.updateMacth(matchRequest);
     }
 
     @DeleteMapping("/deleteMatches/{IDMatch}")
@@ -54,7 +54,7 @@ public class MatchesController {
     }
 
     @GetMapping("/thongke/{IDTour}")
-    public ResponseEntity<List<ThongKeMatch>> getThongKe(@PathVariable int IDTour) {
+    public ResponseEntity<List<ThongKeMatchResponse>> getThongKe(@PathVariable int IDTour) {
         return matchesService.thongKe(IDTour);
     }
 
@@ -83,7 +83,7 @@ public class MatchesController {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date tuNgay = dateFormat.parse(tuNgayStr);
             Date denNgay = dateFormat.parse(denNgayStr);
-            return matchesService.getByCaculate(tuNgay, denNgay, idTour);
+            return matchesService.getByCalculate(tuNgay, denNgay, idTour);
         } catch (ParseException e) {
             e.getMessage();
             return null;

@@ -1,4 +1,4 @@
-package com.example.QuanLyDoiBong.dto;
+package com.example.QuanLyDoiBong.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ThongKeMatch {
+public class ThongKeMatchResponse {
     private String TeamName;
     private long soTranDaDau;
     private long soBanThua;

@@ -1,6 +1,6 @@
 package com.example.QuanLyDoiBong.controller;
 
-import com.example.QuanLyDoiBong.dto.PlayerDTO;
+import com.example.QuanLyDoiBong.dto.request.PlayerRequest;
 import com.example.QuanLyDoiBong.entity.Player;
 import com.example.QuanLyDoiBong.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +23,16 @@ public class PlayerController {
         return playerService.getAllPlayer();
     }
     @PostMapping("/updatePlayer")
-    public ResponseEntity<Object> updatePlayer(@RequestBody PlayerDTO playerDTO){
-        return playerService.updatePlayer(playerDTO);
+    public ResponseEntity<Object> updatePlayer(@RequestBody PlayerRequest playerRequest){
+        return playerService.updatePlayer(playerRequest);
     }
     @DeleteMapping("/deletePlayer/{IDPlayer}")
     public ResponseEntity<Object> deletePlayer(@PathVariable int IDPlayer){
         return playerService.deletePlayer(IDPlayer);
     }
     @PostMapping("/insertPlayer")
-    public ResponseEntity<Object> insertPlayer(@RequestBody PlayerDTO playerDTO){
-        return playerService.insertPlayer(playerDTO);
+    public ResponseEntity<Object> insertPlayer(@RequestBody PlayerRequest playerRequest){
+        return playerService.insertPlayer(playerRequest);
     }
     @PostMapping("/updateImagePlayer")
     public ResponseEntity<Object> updateImage(@RequestParam("IDPlayer") int IDPlayer,
@@ -49,4 +49,3 @@ public class PlayerController {
         return playerService.getPlayerByIDTeam(IDTeam);
     }
 }
-

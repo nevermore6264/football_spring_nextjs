@@ -1,4 +1,4 @@
-package com.example.QuanLyDoiBong.dto;
+package com.example.QuanLyDoiBong.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.sql.Time;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GoalDTO {
+public class GoalRequest {
     private int idgoals;
     private int idmatch;
     private int idplayer;

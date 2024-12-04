@@ -4,7 +4,13 @@ import com.example.QuanLyDoiBong.entity.Team;
 import com.example.QuanLyDoiBong.services.TeamServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -12,24 +18,30 @@ import java.util.List;
 @RestController
 public class TeamController {
     private TeamServices teamServices;
+
     @Autowired
     public TeamController(TeamServices teamServices) {
         this.teamServices = teamServices;
     }
+
     @GetMapping("/getAllTeam")
-    public List<Team> getAllTeam(){
+    public List<Team> getAllTeam() {
         return teamServices.getAllTeam();
     }
+
     @PostMapping("/updateTeam")
-    public ResponseEntity<Object> updateTeam(@RequestBody Team team){
+    public ResponseEntity<Object> updateTeam(@RequestBody Team team) {
         return teamServices.updateTeam(team);
     }
+
     @DeleteMapping("/deleteTeam/{IDTeam}")
-    public ResponseEntity<Object> deleteTeam(@PathVariable int IDTeam){
+    public ResponseEntity<Object> deleteTeam(@PathVariable int IDTeam) {
         return teamServices.deleteTeam(IDTeam);
     }
+
     @PostMapping("/insertTeam")
-    public ResponseEntity<Object> insertTeam(@RequestBody Team team){
+    public ResponseEntity<Object> insertTeam(@RequestBody Team team) {
         return teamServices.insertTeam(team);
     }
+
 }

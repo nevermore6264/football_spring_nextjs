@@ -1,7 +1,7 @@
 package com.example.QuanLyDoiBong.controller;
 
-import com.example.QuanLyDoiBong.dto.GoalDTO;
-import com.example.QuanLyDoiBong.dto.TopScorerDTO;
+import com.example.QuanLyDoiBong.dto.request.GoalRequest;
+import com.example.QuanLyDoiBong.dto.response.TopScorerResponse;
 import com.example.QuanLyDoiBong.entity.Goal;
 import com.example.QuanLyDoiBong.services.GoalServices;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +27,12 @@ public class GoalController {
     }
 
     @PostMapping("/insertGoals")
-    public ResponseEntity<Object> insertGoals(@RequestBody GoalDTO goalDTO) {
-        return goalServices.insertGoal(goalDTO);
+    public ResponseEntity<Object> insertGoals(@RequestBody GoalRequest goalRequest) {
+        return goalServices.insertGoal(goalRequest);
     }
 
     @GetMapping("/top-scorers")
-    public List<TopScorerDTO> getTopScorers() {
+    public List<TopScorerResponse> getTopScorers() {
         return goalServices.getTopScorers();
     }
 

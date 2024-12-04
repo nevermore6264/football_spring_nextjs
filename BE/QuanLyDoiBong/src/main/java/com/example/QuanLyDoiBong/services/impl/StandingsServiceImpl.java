@@ -12,8 +12,10 @@ import java.util.List;
 public class StandingsServiceImpl implements StandingsServices {
     @Autowired
     private StandingsRepository standingsRepository;
+
     @Override
     public List<Standings> getAllAsc() {
         return standingsRepository.findAllByOrderByPointsDesc();
     }
+
 }

@@ -1,6 +1,6 @@
 package com.example.QuanLyDoiBong.services.impl;
 
-import com.example.QuanLyDoiBong.dto.CardDTO;
+import com.example.QuanLyDoiBong.dto.request.CardRequest;
 import com.example.QuanLyDoiBong.entity.*;
 import com.example.QuanLyDoiBong.repository.*;
 import com.example.QuanLyDoiBong.services.CardServices;
@@ -26,18 +26,18 @@ public class CardServicesImpl implements CardServices {
         this.teamRepository = teamRepository;
     }
     @Override
-    public ResponseEntity<Object> insertCard(CardDTO cardDTO) {
+    public ResponseEntity<Object> insertCard(CardRequest cardRequest) {
         try{
-            Match getMatch =  matchRepository.findById(cardDTO.getIdmatch()).get();
-            Player getPlayer = playerRepository.findById(cardDTO.getIdplayer()).get();
-            Team getTeam = teamRepository.findById(cardDTO.getIdteam()).get();
+            Match getMatch =  matchRepository.findById(cardRequest.getIdmatch()).get();
+            Player getPlayer = playerRepository.findById(cardRequest.getIdplayer()).get();
+            Team getTeam = teamRepository.findById(cardRequest.getIdteam()).get();
             if(getMatch != null && getPlayer != null && getTeam != null){
                 Card card = new Card();
                 card.setMatch(getMatch);
                 card.setPlayer(getPlayer);
                 card.setTeam(getTeam);
-                card.setYellowCards(cardDTO.getYellow_cards());
-                card.setRedCards(cardDTO.getRed_cards());
+                card.setYellowCards(cardRequest.getYellow_cards());
+                card.setRedCards(cardRequest.getRed_cards());
                 cardRepository.save(card);
                 return new ResponseEntity<>(Map.of("message:", "Thêm thành công", "data:", card), HttpStatus.OK);
             }else{

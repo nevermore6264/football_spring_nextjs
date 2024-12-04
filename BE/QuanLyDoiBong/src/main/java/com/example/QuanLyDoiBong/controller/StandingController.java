@@ -14,12 +14,15 @@ import java.util.List;
 public class StandingController {
 
     private StandingsServices standingsServices;
+
     @Autowired
     public StandingController(StandingsServices standingsServices) {
         this.standingsServices = standingsServices;
     }
+
     @GetMapping("/bxh")
-    public List<Standings> getBXH(){
+    public List<Standings> getBXH() {
         return standingsServices.getAllAsc();
     }
+
 }

@@ -1,7 +1,7 @@
 package com.example.QuanLyDoiBong.services.impl;
 
-import com.example.QuanLyDoiBong.dto.GoalDTO;
-import com.example.QuanLyDoiBong.dto.TopScorerDTO;
+import com.example.QuanLyDoiBong.dto.request.GoalRequest;
+import com.example.QuanLyDoiBong.dto.response.TopScorerResponse;
 import com.example.QuanLyDoiBong.entity.Goal;
 import com.example.QuanLyDoiBong.entity.Match;
 import com.example.QuanLyDoiBong.entity.Player;
@@ -41,7 +41,7 @@ public class GoalServicesImpl implements GoalServices {
     }
 
     @Override
-    public ResponseEntity<Object> insertGoal(GoalDTO goal) {
+    public ResponseEntity<Object> insertGoal(GoalRequest goal) {
         try {
             Match getMatch = matchRepository.findById(goal.getIdmatch()).get();
             Player getPlayer = playerRepository.findById(goal.getIdplayer()).get();
@@ -64,14 +64,14 @@ public class GoalServicesImpl implements GoalServices {
     }
 
     @Override
-    public List<TopScorerDTO> getTopScorers() {
+    public List<TopScorerResponse> getTopScorers() {
         List<Object[]> topScorersData = goalRepository.findTopScorers();
-        List<TopScorerDTO> topScorersDTO = new ArrayList<>();
+        List<TopScorerResponse> topScorersDTO = new ArrayList<>();
 
         for (Object[] obj : topScorersData) {
             Player player = (Player) obj[0];
             Long goalsScored = (Long) obj[1];
-            TopScorerDTO dto = new TopScorerDTO(player, goalsScored.intValue());
+            TopScorerResponse dto = new TopScorerResponse(player, goalsScored.intValue());
             topScorersDTO.add(dto);
         }
 

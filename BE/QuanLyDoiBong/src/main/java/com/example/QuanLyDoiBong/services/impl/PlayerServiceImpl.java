@@ -1,6 +1,6 @@
 package com.example.QuanLyDoiBong.services.impl;
 
-import com.example.QuanLyDoiBong.dto.PlayerDTO;
+import com.example.QuanLyDoiBong.dto.request.PlayerRequest;
 import com.example.QuanLyDoiBong.entity.Player;
 import com.example.QuanLyDoiBong.entity.Team;
 import com.example.QuanLyDoiBong.repository.PlayerRepository;
@@ -22,6 +22,7 @@ public class PlayerServiceImpl implements PlayerService {
     private final TeamRepository teamRepository;
     @Autowired
     private CloudinaryService cloudinaryService;
+
     @Autowired
     public PlayerServiceImpl(PlayerRepository playerRepository, TeamRepository teamRepository) {
         this.playerRepository = playerRepository;
@@ -34,13 +35,13 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public ResponseEntity<Object> updatePlayer(PlayerDTO player) {
-        try{
+    public ResponseEntity<Object> updatePlayer(PlayerRequest player) {
+        try {
             Optional<Player> updatePlayer = playerRepository.findById(player.getIDPlayer());
             Optional<Team> team = teamRepository.findById(player.getIDTeam());
             System.out.println(team);
             System.out.println(updatePlayer);
-            if(updatePlayer.isPresent() && team.isPresent()){
+            if (updatePlayer.isPresent() && team.isPresent()) {
                 Player PlayUpdate = updatePlayer.get();
                 PlayUpdate.setFullName(player.getFullName());
                 PlayUpdate.setCountry(player.getCountry());
@@ -57,35 +58,35 @@ public class PlayerServiceImpl implements PlayerService {
                 PlayUpdate.setContractStartDate(player.getContractStartDate());
                 Player saved = playerRepository.save(PlayUpdate);
                 return new ResponseEntity<>(saved, HttpStatus.OK);
-            }else{
+            } else {
                 return new ResponseEntity<>("Không tìm thấy", HttpStatus.NOT_FOUND);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @Override
     public ResponseEntity<Object> deletePlayer(int IDPlayer) {
-        try{
+        try {
             Optional<Player> delete = playerRepository.findById(IDPlayer);
-            if(delete.isPresent()){
-               Player notShow = delete.get();
-               notShow.setShows(false);
-               playerRepository.save(notShow);
+            if (delete.isPresent()) {
+                Player notShow = delete.get();
+                notShow.setShows(false);
+                playerRepository.save(notShow);
                 return new ResponseEntity<>("Xóa thành công", HttpStatus.OK);
-            }else{
+            } else {
                 return new ResponseEntity<>("Không tìm thấy", HttpStatus.NOT_FOUND);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @Override
-    public ResponseEntity<Object> insertPlayer(PlayerDTO player) {
-        try{
-            Optional<Team> selectTeam =  teamRepository.findById(player.getIDTeam());
+    public ResponseEntity<Object> insertPlayer(PlayerRequest player) {
+        try {
+            Optional<Team> selectTeam = teamRepository.findById(player.getIDTeam());
             Player newObj = new Player();
             newObj.setCountry(player.getCountry());
             newObj.setEmail(player.getEmail());
@@ -104,7 +105,7 @@ public class PlayerServiceImpl implements PlayerService {
             playerRepository.save(newObj);
             return new ResponseEntity<>("Thêm thành công", HttpStatus.OK);
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -112,12 +113,12 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public ResponseEntity<Object> updateImage(int IDPlayer, MultipartFile avatar) throws IOException {
         Optional<Player> player = playerRepository.findById(IDPlayer);
-        if(player.isPresent()){
+        if (player.isPresent()) {
             Player update = player.get();
             update.setPhoto(cloudinaryService.uploadImage(avatar));
             playerRepository.save(update);
-            return new ResponseEntity<>("Update thành công",HttpStatus.OK);
-        }else{
+            return new ResponseEntity<>("Update thành công", HttpStatus.OK);
+        } else {
             return new ResponseEntity<>("Không tìm thấy", HttpStatus.NOT_FOUND);
         }
     }

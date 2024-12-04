@@ -37,6 +37,7 @@ public class CloudinaryService {
         String videoUrl = (String) uploadResult.get("url");
         return videoUrl;
     }
+
     public String uploadImage(MultipartFile file) throws IOException {
         Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
                 "cloud_name", cloudName,
