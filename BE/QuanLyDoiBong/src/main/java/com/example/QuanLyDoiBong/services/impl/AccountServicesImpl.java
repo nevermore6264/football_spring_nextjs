@@ -16,11 +16,11 @@ public class AccountServicesImpl implements AccountServices {
     @Override
     public ResponseEntity<Object> getAccount(String userName, String passWord) {
         Account account = accountRepository.findAccountByPassWordAndUserName(userName, passWord);
-        if(account != null){
+        if (account != null) {
             return new ResponseEntity<>(account, HttpStatus.OK);
-        }
-        else{
+        } else {
             return new ResponseEntity<>("Sai tài khoản hoặc mật khâủ", HttpStatus.NOT_FOUND);
         }
     }
+
 }
