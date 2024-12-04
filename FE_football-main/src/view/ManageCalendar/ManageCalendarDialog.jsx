@@ -107,8 +107,8 @@ export default function ManageCalendarDialog(props) {
                 return OBJECT_STATUS_MATCH.Start
             case OBJECT_STATUS_MATCH.Progress.name:
                 return OBJECT_STATUS_MATCH.Progress
-            case OBJECT_STATUS_MATCH_MATCH.Progress.name:
-                return OBJECT_STATUS_MATCH.Progress
+            case OBJECT_STATUS_MATCH.Finished.name:
+                return OBJECT_STATUS_MATCH.Finished
             default:
                 return OBJECT_STATUS_MATCH.Start
         }
@@ -173,17 +173,6 @@ export default function ManageCalendarDialog(props) {
                                 onChange={(event) => handleSetData(event.target.value, "matchDate")}
                             />
                         </Grid>
-                        { <Grid item md={4} sm={6} xs={12}>
-                            <TextValidator
-                                className='w-100'
-                                label="Type of competition"
-                                name="loaiTranDau"
-                                value={dataState?.loaiTranDau}
-                                onChange={(event) => handleSetData(event.target.value, "loaiTranDau")}
-                                validators={["required"]}
-                                errorMessages={["This field is required"]}
-                            />
-                        </Grid> }
                         <Grid item md={4} sm={6} xs={12}>
                             <Autocomplete
                                 fullWidth
